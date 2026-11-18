@@ -1,0 +1,530 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Customer profile and agricultural buyer details",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fullName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 180 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 300 },
+        "village": { "type": "string", "maxLength": 100 },
+        "mandal": { "type": "string", "maxLength": 100 },
+        "district": { "type": "string", "maxLength": 100 },
+        "state": { "type": "string", "maxLength": 80 },
+        "pinCode": { "type": "string", "maxLength": 10 },
+        "addresses": { "type": "array", "description": "Up to 10 saved delivery addresses" },
+        "language": { "type": "string", "enum": ["en", "te"] },
+        "buyerLicenseNo": { "type": "string", "maxLength": 80 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "email", "createdAt", "updatedAt"]
+    },
+    "AdminUser": {
+      "title": "AdminUser",
+      "description": "Authorized staff and admin role assignments",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 180 },
+        "role": { "type": "string", "enum": ["SUPER_ADMIN", "ADMIN", "STAFF"] },
+        "permissions": { "type": "array", "description": "Up to 25 module permission strings" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "role", "active", "createdAt", "updatedAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Agricultural product catalog item",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "minLength": 2, "maxLength": 180 },
+        "nameTe": { "type": "string", "maxLength": 180 },
+        "slug": { "type": "string", "maxLength": 200 },
+        "sku": { "type": "string", "minLength": 2, "maxLength": 64 },
+        "brandId": { "type": "string", "maxLength": 128 },
+        "brandName": { "type": "string", "maxLength": 120 },
+        "categoryId": { "type": "string", "maxLength": 128 },
+        "categoryName": { "type": "string", "maxLength": 120 },
+        "subcategory": { "type": "string", "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 4000 },
+        "descriptionTe": { "type": "string", "maxLength": 4000 },
+        "packSizes": { "type": "array", "description": "Pack options up to 10" },
+        "mrp": { "type": "number" },
+        "price": { "type": "number" },
+        "costPrice": { "type": "number" },
+        "gstRate": { "type": "number" },
+        "hsnCode": { "type": "string", "maxLength": 20 },
+        "stock": { "type": "number" },
+        "minStockAlert": { "type": "number" },
+        "images": { "type": "array", "description": "Product image URLs up to 6" },
+        "specifications": { "type": "string", "maxLength": 2000 },
+        "manufacturer": { "type": "string", "maxLength": 200 },
+        "registrationNumber": { "type": "string", "maxLength": 120 },
+        "licenseRequirement": { "type": "string", "enum": ["none", "farmer_declaration", "licensed_buyer"] },
+        "cropTags": { "type": "array", "description": "Crop tags up to 12" },
+        "season": { "type": "string", "enum": ["Kharif", "Rabi", "Summer", "All"] },
+        "usageInstructions": { "type": "string", "maxLength": 2500 },
+        "safetyInstructions": { "type": "string", "maxLength": 2500 },
+        "batchNumber": { "type": "string", "maxLength": 80 },
+        "mfgDate": { "type": "string", "maxLength": 30 },
+        "expiryDate": { "type": "string", "maxLength": 30 },
+        "isFeatured": { "type": "boolean" },
+        "isBestSeller": { "type": "boolean" },
+        "isTodaysDeal": { "type": "boolean" },
+        "dealEndAt": { "type": "string", "maxLength": 40 },
+        "active": { "type": "boolean" },
+        "ratingAvg": { "type": "number" },
+        "ratingCount": { "type": "number" },
+        "isDemo": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "sku", "categoryId", "mrp", "price", "gstRate", "stock", "active", "createdAt", "updatedAt"]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Product category and subcategories",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "minLength": 2, "maxLength": 100 },
+        "nameTe": { "type": "string", "maxLength": 100 },
+        "slug": { "type": "string", "maxLength": 120 },
+        "image": { "type": "string", "maxLength": 500 },
+        "subcategories": { "type": "array", "description": "Subcategories up to 20" },
+        "sortOrder": { "type": "number" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "slug", "sortOrder", "active"]
+    },
+    "Brand": {
+      "title": "Brand",
+      "description": "Agricultural manufacturer or supplier brand",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 500 },
+        "featured": { "type": "boolean" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "featured", "active"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order with GST breakdown, payment status, and tracking timeline",
+      "type": "object",
+      "properties": {
+        "orderNumber": { "type": "string", "minLength": 4, "maxLength": 40 },
+        "userId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "customerName": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "customerPhone": { "type": "string", "maxLength": 20 },
+        "customerEmail": { "type": "string", "maxLength": 180 },
+        "shippingAddress": { "type": "object" },
+        "items": { "type": "array", "description": "Line items up to 50" },
+        "subtotal": { "type": "number" },
+        "discountTotal": { "type": "number" },
+        "couponCode": { "type": "string", "maxLength": 40 },
+        "deliveryCharge": { "type": "number" },
+        "gstTotal": { "type": "number" },
+        "grandTotal": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["COD", "UPI", "CARD", "NET_BANKING", "RAZORPAY"] },
+        "paymentStatus": { "type": "string", "enum": ["PENDING", "VERIFIED", "PAID", "FAILED", "REFUNDED"] },
+        "paymentRef": { "type": "string", "maxLength": 120 },
+        "orderStatus": { "type": "string", "enum": ["ORDER_PLACED", "PAYMENT_CONFIRMED", "PROCESSING", "PACKED", "SHIPPED", "OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED", "REFUNDED"] },
+        "trackingNumber": { "type": "string", "maxLength": 80 },
+        "courierName": { "type": "string", "maxLength": 80 },
+        "regulatedConsentAccepted": { "type": "boolean" },
+        "buyerLicenseRef": { "type": "string", "maxLength": 100 },
+        "timeline": { "type": "array", "description": "Up to 15 status events" },
+        "cancellationReason": { "type": "string", "maxLength": 500 },
+        "returnReason": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderNumber", "userId", "customerName", "items", "subtotal", "gstTotal", "grandTotal", "paymentMethod", "paymentStatus", "orderStatus", "createdAt", "updatedAt"]
+    },
+    "OrderItem": {
+      "title": "OrderItem",
+      "description": "Normalized order line item record",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "productId": { "type": "string", "maxLength": 128 },
+        "productName": { "type": "string", "maxLength": 180 },
+        "packSize": { "type": "string", "maxLength": 60 },
+        "qty": { "type": "number" },
+        "unitPrice": { "type": "number" },
+        "gstRate": { "type": "number" },
+        "gstAmount": { "type": "number" },
+        "lineTotal": { "type": "number" }
+      },
+      "required": ["orderId", "userId", "productId", "qty", "unitPrice", "lineTotal"]
+    },
+    "Cart": {
+      "title": "Cart",
+      "description": "User persistent shopping cart",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "items": { "type": "array", "description": "Cart items up to 50" },
+        "couponCode": { "type": "string", "maxLength": 40 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "items", "updatedAt"]
+    },
+    "Wishlist": {
+      "title": "Wishlist",
+      "description": "User saved product IDs",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "productIds": { "type": "array", "description": "Saved product IDs up to 100" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "productIds", "updatedAt"]
+    },
+    "Payment": {
+      "title": "Payment",
+      "description": "Payment transaction record",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "amount": { "type": "number" },
+        "method": { "type": "string", "maxLength": 40 },
+        "status": { "type": "string", "enum": ["PENDING", "VERIFIED", "PAID", "FAILED", "REFUNDED"] },
+        "gatewayRef": { "type": "string", "maxLength": 160 },
+        "verifiedByServer": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderId", "userId", "amount", "method", "status", "verifiedByServer", "createdAt"]
+    },
+    "Coupon": {
+      "title": "Coupon",
+      "description": "Promotional discount coupon",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "minLength": 2, "maxLength": 40 },
+        "discountType": { "type": "string", "enum": ["PERCENT", "FIXED"] },
+        "discountValue": { "type": "number" },
+        "minOrderValue": { "type": "number" },
+        "maxDiscount": { "type": "number" },
+        "categoryId": { "type": "string", "maxLength": 128 },
+        "productId": { "type": "string", "maxLength": 128 },
+        "startDate": { "type": "string", "maxLength": 40 },
+        "expiryDate": { "type": "string", "maxLength": 40 },
+        "usageLimit": { "type": "number" },
+        "perCustomerLimit": { "type": "number" },
+        "usedCount": { "type": "number" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["code", "discountType", "discountValue", "minOrderValue", "active"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Verified customer product review",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userName": { "type": "string", "minLength": 1, "maxLength": 100 },
+        "rating": { "type": "number" },
+        "title": { "type": "string", "maxLength": 140 },
+        "comment": { "type": "string", "minLength": 3, "maxLength": 1200 },
+        "verifiedPurchase": { "type": "boolean" },
+        "approved": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "userId", "userName", "rating", "comment", "approved", "createdAt"]
+    },
+    "Banner": {
+      "title": "Banner",
+      "description": "Homepage hero and promotional banners",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "maxLength": 160 },
+        "titleTe": { "type": "string", "maxLength": 160 },
+        "subtitle": { "type": "string", "maxLength": 300 },
+        "subtitleTe": { "type": "string", "maxLength": 300 },
+        "ctaText": { "type": "string", "maxLength": 60 },
+        "ctaLink": { "type": "string", "maxLength": 200 },
+        "imageUrl": { "type": "string", "maxLength": 500 },
+        "placement": { "type": "string", "enum": ["hero", "promo", "top_bar"] },
+        "sortOrder": { "type": "number" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["title", "placement", "sortOrder", "active"]
+    },
+    "InventoryRecord": {
+      "title": "InventoryRecord",
+      "description": "Warehouse inventory tracking per product",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "maxLength": 128 },
+        "sku": { "type": "string", "maxLength": 64 },
+        "currentStock": { "type": "number" },
+        "reservedStock": { "type": "number" },
+        "minThreshold": { "type": "number" },
+        "warehouseLocation": { "type": "string", "maxLength": 120 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "sku", "currentStock", "reservedStock", "minThreshold", "updatedAt"]
+    },
+    "StockMovement": {
+      "title": "StockMovement",
+      "description": "Inventory audit trail entry",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "maxLength": 128 },
+        "productName": { "type": "string", "maxLength": 180 },
+        "type": { "type": "string", "enum": ["IN", "OUT", "ADJUSTMENT", "RESERVE", "RELEASE"] },
+        "quantity": { "type": "number" },
+        "previousStock": { "type": "number" },
+        "newStock": { "type": "number" },
+        "batchNumber": { "type": "string", "maxLength": 80 },
+        "supplierId": { "type": "string", "maxLength": 128 },
+        "note": { "type": "string", "maxLength": 400 },
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "type", "quantity", "previousStock", "newStock", "actorUid", "createdAt"]
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "description": "Agricultural input supplier",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 160 },
+        "contactPerson": { "type": "string", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "email": { "type": "string", "maxLength": 180 },
+        "gstin": { "type": "string", "maxLength": 20 },
+        "address": { "type": "string", "maxLength": 300 },
+        "active": { "type": "boolean" }
+      },
+      "required": ["name", "active"]
+    },
+    "PurchaseEntry": {
+      "title": "PurchaseEntry",
+      "description": "Stock purchase entry from supplier",
+      "type": "object",
+      "properties": {
+        "supplierId": { "type": "string", "maxLength": 128 },
+        "supplierName": { "type": "string", "maxLength": 160 },
+        "productId": { "type": "string", "maxLength": 128 },
+        "productName": { "type": "string", "maxLength": 180 },
+        "batchNumber": { "type": "string", "maxLength": 80 },
+        "mfgDate": { "type": "string", "maxLength": 30 },
+        "expiryDate": { "type": "string", "maxLength": 30 },
+        "quantity": { "type": "number" },
+        "unitCost": { "type": "number" },
+        "totalCost": { "type": "number" },
+        "invoiceNo": { "type": "string", "maxLength": 80 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["supplierId", "productId", "quantity", "unitCost", "totalCost", "createdAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Customer order and system notifications",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "channel": { "type": "string", "enum": ["EMAIL", "SMS", "WHATSAPP", "IN_APP"] },
+        "title": { "type": "string", "maxLength": 160 },
+        "message": { "type": "string", "maxLength": 600 },
+        "orderId": { "type": "string", "maxLength": 128 },
+        "status": { "type": "string", "enum": ["SENT", "QUEUED", "FAILED"] },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "channel", "title", "message", "status", "read", "createdAt"]
+    },
+    "Invoice": {
+      "title": "Invoice",
+      "description": "GST tax invoice for completed orders",
+      "type": "object",
+      "properties": {
+        "invoiceNumber": { "type": "string", "maxLength": 60 },
+        "orderId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "customerName": { "type": "string", "maxLength": 120 },
+        "customerGstin": { "type": "string", "maxLength": 20 },
+        "items": { "type": "array", "description": "Invoice lines up to 50" },
+        "taxableValue": { "type": "number" },
+        "cgst": { "type": "number" },
+        "sgst": { "type": "number" },
+        "grandTotal": { "type": "number" },
+        "issuedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["invoiceNumber", "orderId", "userId", "customerName", "taxableValue", "grandTotal", "issuedAt"]
+    },
+    "Settings": {
+      "title": "Settings",
+      "description": "Business, license, GST, and website visibility configuration",
+      "type": "object",
+      "properties": {
+        "storeName": { "type": "string", "maxLength": 160 },
+        "tagline": { "type": "string", "maxLength": 200 },
+        "address": { "type": "string", "maxLength": 300 },
+        "phone": { "type": "string", "maxLength": 40 },
+        "email": { "type": "string", "maxLength": 180 },
+        "gstin": { "type": "string", "maxLength": 30 },
+        "fertilizerLicenseNo": { "type": "string", "maxLength": 100 },
+        "pesticideLicenseNo": { "type": "string", "maxLength": 100 },
+        "seedLicenseNo": { "type": "string", "maxLength": 100 },
+        "freeDeliveryThreshold": { "type": "number" },
+        "standardDeliveryFee": { "type": "number" },
+        "topBarAnnouncement": { "type": "string", "maxLength": 240 },
+        "topBarAnnouncementTe": { "type": "string", "maxLength": 240 },
+        "sectionsVisibility": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["storeName", "updatedAt"]
+    },
+    "AuditLog": {
+      "title": "AuditLog",
+      "description": "Security and administrative activity logs",
+      "type": "object",
+      "properties": {
+        "actorUid": { "type": "string", "maxLength": 128 },
+        "actorEmail": { "type": "string", "maxLength": 180 },
+        "action": { "type": "string", "maxLength": 120 },
+        "entityType": { "type": "string", "maxLength": 60 },
+        "entityId": { "type": "string", "maxLength": 128 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["actorUid", "action", "entityType", "createdAt"]
+    },
+    "NewsletterSubscriber": {
+      "title": "NewsletterSubscriber",
+      "description": "Email newsletter opt-in",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email", "maxLength": 180 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "createdAt"]
+    },
+    "ProductQuestion": {
+      "title": "ProductQuestion",
+      "description": "Customer question and admin answer on a product",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "userName": { "type": "string", "maxLength": 100 },
+        "question": { "type": "string", "minLength": 5, "maxLength": 500 },
+        "answer": { "type": "string", "maxLength": 1000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["productId", "userId", "userName", "question", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Private customer profile and saved delivery addresses"
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminUser" },
+      "description": "Admin and staff role assignments managed by Super Admin"
+    },
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Publicly readable agricultural product catalog"
+    },
+    "/categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/Category" },
+      "description": "Publicly readable categories and subcategories"
+    },
+    "/brands/{brandId}": {
+      "schema": { "$ref": "#/entities/Brand" },
+      "description": "Publicly readable featured agricultural brands"
+    },
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Customer orders isolated per userId or admin/staff"
+    },
+    "/orderItems/{itemId}": {
+      "schema": { "$ref": "#/entities/OrderItem" },
+      "description": "Normalized order line items isolated per userId or admin/staff"
+    },
+    "/carts/{userId}": {
+      "schema": { "$ref": "#/entities/Cart" },
+      "description": "User persistent shopping cart"
+    },
+    "/wishlists/{userId}": {
+      "schema": { "$ref": "#/entities/Wishlist" },
+      "description": "User saved wishlist"
+    },
+    "/payments/{paymentId}": {
+      "schema": { "$ref": "#/entities/Payment" },
+      "description": "Payment ledger isolated per userId or admin/staff"
+    },
+    "/coupons/{couponId}": {
+      "schema": { "$ref": "#/entities/Coupon" },
+      "description": "Active coupon codes and admin management"
+    },
+    "/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Product customer reviews"
+    },
+    "/banners/{bannerId}": {
+      "schema": { "$ref": "#/entities/Banner" },
+      "description": "Homepage banners managed by admin"
+    },
+    "/inventory/{inventoryId}": {
+      "schema": { "$ref": "#/entities/InventoryRecord" },
+      "description": "Admin-managed warehouse inventory"
+    },
+    "/stockMovements/{movementId}": {
+      "schema": { "$ref": "#/entities/StockMovement" },
+      "description": "Inventory movement audit trail"
+    },
+    "/suppliers/{supplierId}": {
+      "schema": { "$ref": "#/entities/Supplier" },
+      "description": "Admin-managed suppliers"
+    },
+    "/purchaseEntries/{entryId}": {
+      "schema": { "$ref": "#/entities/PurchaseEntry" },
+      "description": "Admin-managed stock purchase entries"
+    },
+    "/notifications/{notificationId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "User order notifications"
+    },
+    "/invoices/{invoiceId}": {
+      "schema": { "$ref": "#/entities/Invoice" },
+      "description": "GST invoices per order"
+    },
+    "/settings/{settingId}": {
+      "schema": { "$ref": "#/entities/Settings" },
+      "description": "Storefront configuration and business/license metadata"
+    },
+    "/auditLogs/{logId}": {
+      "schema": { "$ref": "#/entities/AuditLog" },
+      "description": "Immutable administrative activity logs"
+    },
+    "/newsletter/{subscriberId}": {
+      "schema": { "$ref": "#/entities/NewsletterSubscriber" },
+      "description": "Newsletter subscription records"
+    },
+    "/questions/{questionId}": {
+      "schema": { "$ref": "#/entities/ProductQuestion" },
+      "description": "Product Q&A submissions"
+    }
+  }
+}

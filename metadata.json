@@ -1,0 +1,6 @@
+{
+  "name": "Laksmi Fertilizers Pesticides and Seeds",
+  "description": "Indian agricultural e-commerce platform for fertilizers, crop protection, hybrid seeds, bio-inputs, and farming equipment in English and Telugu.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
